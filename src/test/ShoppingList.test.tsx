@@ -2,7 +2,8 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, test } from 'vitest'
 
-import ShoppingList, { ItemCategory } from '@/base/components/ShoppingList.tsx'
+import ShoppingList from '@/base/components/ShoppingList.tsx'
+import { ItemCategory } from '@/base/model/ItemCategory.ts'
 import { ShoppingListRepositoryImpl } from '@/base/repository/ShoppinListRepository.ts'
 
 vi.mocked('@/base/repository/ShoppingListRepository.tsx')
@@ -101,6 +102,74 @@ describe('ShoppingList', () => {
     expect(cartArea.getByText('玉ねぎ')).toBeInTheDocument()
   })
 
+  test('cartListの戻すボタンを押すと該当するitemがwishListに戻る', async () => {
+    // ARRANGE
+    vi.spyOn(shoppingListRepository, 'getShoppingList').mockReturnValue([
+      {
+        id: 'uuid-1',
+        name: '玉ねぎ',
+        category: ItemCategory.CART,
+      },
+      {
+        id: 'uuid-2',
+        name: '長ねぎ',
+        category: ItemCategory.CART,
+      },
+      {
+        id: 'uuid-3',
+        name: 'かぼちゃ',
+        category: ItemCategory.CART,
+      },
+    ])
+    render(<ShoppingList shoppingListRepository={shoppingListRepository} />)
+
+    const cartArea = within(screen.getByTestId('cartList'))
+    const wishArea = within(screen.getByTestId('wishList'))
+    const putBackButton = cartArea.getAllByRole('button', { name: '戻す' })[1]
+
+    // ACT
+    await userEvent.click(putBackButton)
+
+    // ASSERT
+    expect(cartArea.getByText('玉ねぎ')).toBeInTheDocument()
+    expect(cartArea.queryByText('長ねぎ')).not.toBeInTheDocument()
+    expect(wishArea.getByText('長ねぎ')).toBeInTheDocument()
+    expect(cartArea.getByText('かぼちゃ')).toBeInTheDocument()
+  })
+
+  test('cartListの削除ボタンを押すと該当するitemが削除される', async () => {
+    // ARRANGE
+    vi.spyOn(shoppingListRepository, 'getShoppingList').mockReturnValue([
+      {
+        id: 'uuid-1',
+        name: '玉ねぎ',
+        category: ItemCategory.CART,
+      },
+      {
+        id: 'uuid-2',
+        name: '長ねぎ',
+        category: ItemCategory.CART,
+      },
+      {
+        id: 'uuid-3',
+        name: 'かぼちゃ',
+        category: ItemCategory.CART,
+      },
+    ])
+    render(<ShoppingList shoppingListRepository={shoppingListRepository} />)
+
+    const cartArea = within(screen.getByTestId('cartList'))
+    const deleteButton = cartArea.getAllByRole('button', { name: '削除' })[1]
+
+    // ACT
+    await userEvent.click(deleteButton)
+
+    // ASSERT
+    expect(cartArea.getByText('玉ねぎ')).toBeInTheDocument()
+    expect(cartArea.queryByText('長ねぎ')).not.toBeInTheDocument()
+    expect(cartArea.getByText('かぼちゃ')).toBeInTheDocument()
+  })
+
   test('「すべて削除」ボタンを押すとitemが全て削除される', async () => {
     // ARRANGE
     render(<ShoppingList shoppingListRepository={shoppingListRepository} />)
@@ -121,6 +190,39 @@ describe('ShoppingList', () => {
     // ASSERT
     expect(screen.queryByText('玉ねぎ')).not.toBeInTheDocument()
     expect(screen.queryByText('長ねぎ')).not.toBeInTheDocument()
+  })
+
+  test('「すべて戻す」ボタンを押すとitemが全てwishListに戻る', async () => {
+    // ARRANGE
+    vi.spyOn(shoppingListRepository, 'getShoppingList').mockReturnValue([
+      {
+        id: 'uuid-1',
+        name: '玉ねぎ',
+        category: ItemCategory.CART,
+      },
+      {
+        id: 'uuid-2',
+        name: '長ねぎ',
+        category: ItemCategory.CART,
+      },
+      {
+        id: 'uuid-3',
+        name: 'かぼちゃ',
+        category: ItemCategory.CART,
+      },
+    ])
+
+    render(<ShoppingList shoppingListRepository={shoppingListRepository} />)
+
+    const putBackButton = screen.getByRole('button', { name: 'すべて戻す' })
+    // ACT
+    await userEvent.click(putBackButton)
+
+    // ASSERT
+    const wishArea = within(screen.getByTestId('wishList'))
+    expect(wishArea.getByText('玉ねぎ')).toBeInTheDocument()
+    expect(wishArea.getByText('長ねぎ')).toBeInTheDocument()
+    expect(wishArea.getByText('かぼちゃ')).toBeInTheDocument()
   })
 
   test('レンダリング時、getShoppingListを実行していること', async () => {

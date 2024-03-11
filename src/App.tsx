@@ -8,10 +8,10 @@ function App() {
   const [shoppingListRepository] = useState(new ShoppingListRepositoryImpl())
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-100 p-4">
       <Header />
       <ShoppingList shoppingListRepository={shoppingListRepository} />
-    </>
+    </div>
   )
 }
 

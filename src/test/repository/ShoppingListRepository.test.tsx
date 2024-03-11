@@ -1,4 +1,4 @@
-import { ItemCategory } from '@/base/components/ShoppingList.tsx'
+import { ItemCategory } from '@/base/model/ItemCategory.ts'
 import { ShoppingListRepositoryImpl } from '@/base/repository/ShoppinListRepository.ts'
 
 describe('ShoppingListRepository', () => {
