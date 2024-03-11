@@ -43,6 +43,7 @@ describe('ShoppingList', () => {
       screen.getByRole('heading', { name: 'カゴに入れるもの' }),
     ).toBeInTheDocument()
   })
+
   test('「カゴに入れたもの」のラベルが表示されていること', () => {
     // ARRANGE
     render(<ShoppingList shoppingListRepository={shoppingListRepository} />)
@@ -52,6 +53,7 @@ describe('ShoppingList', () => {
       screen.getByRole('heading', { name: 'カゴに入れたもの' }),
     ).toBeInTheDocument()
   })
+
   test('買い物品入力後、追加ボタンを押すとwishListに買い物品とチェックボックスが追加されLocalStorageにセットされる', async () => {
     // ARRANGE
     const stubUuid = 'dummy-id'
@@ -76,7 +78,9 @@ describe('ShoppingList', () => {
         category: ItemCategory.WISH,
       },
     ])
+    expect(inputBox).toHaveValue('')
   })
+
   test('wishListのチェックボックスを押すとitemがcartListに移動する', async () => {
     // ARRANGE
     render(<ShoppingList shoppingListRepository={shoppingListRepository} />)
@@ -118,6 +122,7 @@ describe('ShoppingList', () => {
     expect(screen.queryByText('玉ねぎ')).not.toBeInTheDocument()
     expect(screen.queryByText('長ねぎ')).not.toBeInTheDocument()
   })
+
   test('レンダリング時、getShoppingListを実行していること', async () => {
     // ARRANGE
     // ACT
@@ -127,6 +132,7 @@ describe('ShoppingList', () => {
     // ASSERT
     expect(shoppingListRepository.getShoppingList).toHaveBeenCalled()
   })
+
   test('getShoppingListで取得したアイテムをそれぞれのエリアに表示していること', async () => {
     // ARRANGE
 

@@ -44,6 +44,7 @@ const ShoppingList = ({ shoppingListRepository }: Props) => {
       name: inputValue,
       category: ItemCategory.WISH,
     }
+    setInputValue('')
     setItems((prev) => [...prev, createdItem])
   }
 
