@@ -1,4 +1,4 @@
-import { Item } from '@/base/components/ShoppingList.tsx'
+import { Item } from './ShoppingList.tsx'
 
 type Props = {
   items: Item[]
