@@ -14,7 +14,7 @@ export default defineConfig({
       return path.replace('/src/', '/__snapshots__/') + extension
     },
   },
-  base: '/shoppingList-app/',
+  base: '/',
   server: {
     proxy: {
       '/api': {
