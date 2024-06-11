@@ -9,11 +9,6 @@ class HomeController {
 
     @RequestMapping("/{path:[^\\.]*}")
     fun redirect(): String {
-        return "forward:/index.html"
-    }
-
-    @GetMapping("/")
-    fun home(): String {
-        return "forward:/index.html"
+        return "forward:/"
     }
 }
