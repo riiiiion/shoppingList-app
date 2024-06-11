@@ -44,7 +44,7 @@ class ShoppingListControllerTest {
             // ARRANGE
             every {
                 spyShoppingListService.saveShoppingItem(any())
-            } returns ShoppingListEntity(id = 1, name = "test-name", category = "test-category")
+            } returns ShoppingListEntity(id = 1, name = "test-name", category = "Wish")
 
             // ACT
             val mockMvc = mockMvc.perform(
