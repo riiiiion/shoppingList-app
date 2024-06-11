@@ -7,6 +7,7 @@ import ShoppingList from '@/base/components/ShoppingList.tsx'
 
 vitest.mock('@/base/components/Header.tsx')
 vitest.mock('@/base/components/ShoppingList.tsx')
+
 describe('App', () => {
   test('Headerコンポーネントを呼び出していること', () => {
     render(<App />)

@@ -16,12 +16,12 @@ export function WishList({ items, onClickCheckBox }: Props) {
           <input
             className="h-5 w-5 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
             type="checkbox"
-            id={item.id}
+            id={item.id.toString()}
             onClick={(e) => onClickCheckBox(e)}
             value={item.id}
           />
           <label
-            htmlFor={item.id}
+            htmlFor={item.id.toString()}
             className="ml-3 text-lg font-medium text-gray-700"
           >
             {item.name}

@@ -1,7 +1,9 @@
 package com.example.shoppingList.service
 
 import com.example.shoppingList.entity.ShoppingListEntity
+import com.example.shoppingList.models.DeleteItemIds
 import com.example.shoppingList.models.ShoppingItemRequest
+import com.example.shoppingList.models.UpdateShoppingItemRequest
 import com.example.shoppingList.repository.ShoppingListRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -46,5 +48,49 @@ class DefaultShoppingListServiceTest {
 
         // ASSERT
         assertEquals(savedShoppingList, result)
+    }
+
+    @Test
+    fun `updateShoppingItemが実行されるとDBから更新したshoppingItemのidが返される`() {
+        // ARRANGE
+        val shoppingListService = DefaultShoppingListService(shoppingListRepository)
+        val savedShoppingList = shoppingListRepository.saveAll(
+            listOf(
+                ShoppingListEntity(name = "test-name1", category = "Wish"),
+                ShoppingListEntity(name = "test-name2", category = "Wish")
+            )
+        )
+
+
+        // ACT
+        val updateShoppingItem = UpdateShoppingItemRequest(id = savedShoppingList[0].id, name = "test-name1", category = "Cart")
+        val result = shoppingListService.updateShoppingItem(updateShoppingItem)
+
+        // ASSERT
+        val shoppingItemFromDB = shoppingListRepository.findById(result.id).get()
+        assertEquals(updateShoppingItem.id, result.id)
+        assertEquals("Cart", shoppingItemFromDB.category)
+    }
+
+    @Test
+    fun `deleteShoppingItemが実行されるとDBから削除したshoppingItemのidがListで返される`() {
+        // ARRANGE
+        val shoppingListService = DefaultShoppingListService(shoppingListRepository)
+        val savedShoppingList = shoppingListRepository.saveAll(
+            listOf(
+                ShoppingListEntity(name = "test-name1", category = "Wish"),
+                ShoppingListEntity(name = "test-name2", category = "Wish")
+            )
+        )
+
+
+        // ACT
+        val deleteItemIds = DeleteItemIds(ids=listOf(savedShoppingList[0].id,savedShoppingList[1].id))
+        val result = shoppingListService.deleteShoppingItem(deleteItemIds)
+
+        // ASSERT
+        val shoppingItemFromDB = shoppingListRepository.findAll()
+        assertEquals(0, shoppingItemFromDB.size)
+        assertEquals(deleteItemIds, result)
     }
 }

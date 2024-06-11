@@ -17,13 +17,13 @@ export function CartList({ items, onDeleteItem, onPutBackItem }: Props) {
             <div>
               <button
                 className="px-2 py-1 bg-green-200 text-green-600 font-semibold rounded hover:bg-green-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 text-xs"
-                onClick={() => onPutBackItem(item.id)}
+                onClick={() => onPutBackItem(item.id.toString())}
               >
                 戻す
               </button>
               <button
                 className="px-2 py-1 bg-red-200 text-red-600 font-semibold rounded hover:bg-red-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-xs"
-                onClick={() => onDeleteItem(item.id)}
+                onClick={() => onDeleteItem(item.id.toString())}
               >
                 削除
               </button>

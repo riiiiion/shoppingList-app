@@ -1,4 +1,4 @@
 export enum ItemCategory {
-  WISH,
-  CART,
+  WISH='Wish',
+  CART='Cart',
 }
